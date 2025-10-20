@@ -5,7 +5,7 @@ sources:
     database: ecommerce-analytics-475706
     schema: dbt_ecommerce_raw
     tables:
-      - name: olist_customers_dataset
+      - name: olist_customer_dataset
       - name: olist_orders_dataset
       - name: olist_order_items_dataset
       - name: olist_products_dataset
