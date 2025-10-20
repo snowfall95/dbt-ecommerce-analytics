@@ -1,16 +1,16 @@
 version: 2
 
 sources: 
-  - name: ecommerce_db
+  - name: brazillian_ecommerce
     database: ecommerce-analytics-475706
     schema: dbt_ecommerce_raw
     tables:
-      - name: customers
-      - name: order_items
-      - name: order_payments
-      - name: order_reviews
-      - name: order_dataset
-      - name: products
-      - name: sellers
-      - name: product_category_name_translation
-      - name: geolocation
+      - name: olist_customers_dataset
+      - name: olist_orders_dataset
+      - name: olist_order_items_dataset
+      - name: olist_products_dataset
+      - name: olist_sellers_dataset
+      - name: olist_order_payments_dataset
+      - name: olist_order_reviews_dataset
+      - name: olist_geolocation_dataset
+      - name: olist_product_category_name_translation
