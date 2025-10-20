@@ -1,0 +1,32 @@
+# Python
+venv/
+*.pyc
+__pycache__/
+.Python
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+
+# dbt
+target/
+dbt_packages/
+logs/
+dbt_modules/
+
+# Credentials - IMPORTANT!
+*.json
+.env
+*.pem
+*.key
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
