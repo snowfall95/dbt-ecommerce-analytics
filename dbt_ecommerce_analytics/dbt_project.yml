@@ -41,3 +41,15 @@ models:
     marts:
       +materialized: table
       +schema: mart
+
+      core:
+        +enabled: true
+    
+seeds:
+  dbt_ecommerce_analytics:
+    +schema: seeds  
+    product_category_name_translation:
+      +quote_columns: false
+      +column_types:
+        product_category_name: string
+        product_category_name_english: string
