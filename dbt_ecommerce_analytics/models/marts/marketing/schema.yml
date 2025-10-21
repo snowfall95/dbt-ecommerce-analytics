@@ -1,0 +1,82 @@
+version: 2
+
+models:
+  - name: fact_customer_lifetime_value
+    description: "Fact table calculating customer lifetime value based on total spend."
+    columns:
+      - name: customer_unique_id  # Standardized name
+        description: "Unique identifier for each customer."
+        tests:
+          - not_null
+          - unique
+      - name: total_orders
+        description: "Total number of orders placed by the customer."
+        tests:
+          - not_null
+      - name: total_spent
+        description: "Total amount spent by the customer."
+        tests:
+          - not_null
+      - name: average_order_value
+        description: "Average value of orders placed by the customer."
+        tests:
+          - not_null
+      - name: first_purchase 
+        description: "Date of the customer's first purchase."
+        tests:
+          - not_null
+      - name: last_purchase
+        description: "Date of the customer's most recent purchase."
+        tests:
+          - not_null
+      - name: customer_lifespan_days
+        description: "Number of days between the first and last purchase."
+        tests:
+          - not_null
+
+  - name: fact_customer_satisfaction
+    description: "Fact table calculating customer satisfaction based on review ratings."
+    columns:
+      - name: customer_id
+        description: "Unique identifier for each customer."
+        tests:
+          - not_null
+          - unique
+      - name: total_reviews
+        description: "Total number of reviews submitted by the customer."
+        tests:
+          - not_null
+      - name: average_review_score
+        description: "Average score of reviews submitted by the customer."
+        tests:
+          - not_null
+      - name: positive_reviews
+        description: "Number of reviews with a score of 4 or 5 stars submitted by the customer."
+        tests:
+          - not_null
+      - name: negative_reviews
+        description: "Number of reviews with a score of 1 or 2 stars submitted by the customer."
+        tests:
+          - not_null
+      - name: average_response_time_days
+        description: "Average time taken to respond to the customer's reviews."
+        
+  - name: fact_delivery_performance
+    description: "Fact table analyzing delivery performance metrics."
+    columns:
+      - name: customer_id 
+        description: "Unique identifier for each customer."
+        tests:
+          - not_null
+          - unique
+      - name: delivery_performance_category
+        description: "Category of delivery performance (Early, On-time, Slightly Late, Very Late)."
+        tests:
+          - accepted_values:
+              values: ['Early', 'On-time', 'Slightly Late', 'Very Late']
+      - name: total_deliveries
+        description: "Total number of deliveries made to the customer."
+        tests:
+          - not_null
+      - name: average_delay_days
+        description: "Average number of days deliveries were delayed."
