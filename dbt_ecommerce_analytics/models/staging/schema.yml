@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: stg_brz_ecommerce__orders
+  - name: staging_orders
     description: "Staging table for Olist Orders Dataset"
     tests:
       - dbt_expectations.expect_compound_columns_to_be_unique:
