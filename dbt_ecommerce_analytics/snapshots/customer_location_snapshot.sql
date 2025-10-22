@@ -1,4 +1,4 @@
-{% {% snapshot customer_location_snapshot %}
+{% snapshot customer_location_snapshot %}
 
 {{
    config(
