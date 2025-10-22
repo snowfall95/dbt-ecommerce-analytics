@@ -57,4 +57,3 @@ seeds:
 snapshots:
   dbt_ecommerce_analytics:
     +schema: snapshots
-    +target_database: ecommerce-analytics-475706 
