@@ -1,18 +1,16 @@
 {% snapshot customer_location_snapshot %}
 
 {{
-   config(
-       target_database='target_database',
+   config (
+       
+       target_database='ecommerce-analytics-475706',
        target_schema='snapshots',
        unique_key='customer_unique_id',
+       strategy='timestamp',
+       updated_at = 'record_updated_at'
 
-       strategy='check',
-       updated_at='updated_at',
    )
 }}
-
-
-{% endsnapshot %}
 
 select 
 
@@ -21,3 +19,5 @@ select
     current_timestamp() as record_updated_at
 
 from {{ ref('staging_customers') }}
+
+{% endsnapshot %}
