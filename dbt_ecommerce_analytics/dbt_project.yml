@@ -53,3 +53,8 @@ seeds:
       +column_types:
         product_category_name: string
         product_category_name_english: string
+
+snapshots:
+  dbt_ecommerce_analytics:
+    +schema: snapshots
+    +target_database: ecommerce-analytics-475706 
