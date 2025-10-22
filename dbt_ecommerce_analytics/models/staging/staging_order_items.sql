@@ -16,6 +16,7 @@ transformed as (
         seller_id,
         shipping_limit_date,
         price,
+        'BRL' as currency,
         freight_value   
     from source
 
