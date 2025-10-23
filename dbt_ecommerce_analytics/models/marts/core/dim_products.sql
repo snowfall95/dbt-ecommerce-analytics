@@ -8,7 +8,7 @@ products as (
 
 product_english_translations as (
 
-    select * from {{ ref('staging_product_category_name_translation') }}
+    select * from {{ ref('product_category_name_translation') }}
 
 )
 

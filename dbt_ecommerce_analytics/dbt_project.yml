@@ -38,12 +38,14 @@ models:
       +schema: staging
     intermediate:
       +materialized: ephemeral
+      +schema: intermediate
     marts:
       +materialized: table
       +schema: mart
 
       core:
         +enabled: true
+        +schema: core
     
 seeds:
   dbt_ecommerce_analytics:

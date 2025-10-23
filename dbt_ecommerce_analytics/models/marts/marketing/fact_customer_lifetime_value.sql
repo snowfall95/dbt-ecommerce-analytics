@@ -1,8 +1,11 @@
+-- Granularity: One row per customer with lifetime metrics
+
 with 
 
 orders as (
 
     select * from {{ ref('fact_orders') }}
+    where order_status not in ('canceled', 'unavailable')
 
 ),
 
@@ -14,26 +17,51 @@ customers as (
 
 select 
 
+    c.customer_id,
     c.customer_unique_id,
+    c.city as customer_city,
+    c.state as customer_state,
+
+    -- Order Metrics
     count(distinct o.order_id) as total_orders,
+    min(o.order_purchase_timestamp) as first_order_date,
+    max(o.order_purchase_timestamp) as recent_order_date,
+    date_diff(max(o.order_purchase_timestamp), min(o.order_purchase_timestamp), day) as customer_lifespan_days,
+
+    -- Financial Metrics
+    round(sum(o.order_gross_value), 2) as gross_revenue,
+    round(sum(o.order_total_price), 2) as total_price,
+    round(sum(o.order_total_freight), 2) as total_freight,
     round(sum(o.total_payment), 2) as total_spent,
     round(avg(o.total_payment), 2) as average_order_value,
-    min(o.order_purchase_timestamp) as first_purchase,
-    max(o.order_purchase_timestamp) as recent_purchase,
-    date_diff(max(o.order_purchase_timestamp), min(o.order_purchase_timestamp), day) as customer_lifespan_days
+
+    -- Product diversity
+    count(distinct o.unique_products) as total_unique_products_ordered,
+    avg(o.unique_products) as avg_unique_products_per_order,
+
+    -- Recency Metrics
+    date_diff(current_timestamp(), max(o.order_purchase_timestamp), day) as days_since_last_order,
+
+    -- Customer segments
+    case 
+        when count(distinct o.order_id) = 1 then 'one-time'
+        when count(distinct o.order_id) between 2 and 5 then 'repeat'
+        else 'loyal'
+    end as customer_segment,
+
+    case 
+        when date_diff(max(o.order_purchase_timestamp), min(o.order_purchase_timestamp), day) < 30 then 'new'
+        when date_diff(max(o.order_purchase_timestamp), min(o.order_purchase_timestamp), day) between 30 and 180 then 'active'
+        else 'dormant'
+    end as customer_activity_status
 
 from customers c 
-join orders o 
-on c.customer_id = o.customer_id
-group by 1
-order by 3 desc
+left join orders o -- LEFT JOIN is to ensure we get all customers
+    on c.customer_id = o.customer_id
+group by 
+    c.customer_id,
+    c.customer_unique_id,
+    c.city,
+    c.state
+order by gross_revenue desc
 
-
-/* 
-Insights / ideas to visualize in the dashboard:
-1. Top 10 Customers by Total Spent: A bar chart showcasing the top 10 customers based on the total amount spent.
-2. Average Order Value Distribution: A histogram displaying the distribution of average order values across all customers
-3. Customer Lifespan Analysis: A line chart illustrating the average customer lifespan in days over different cohorts (e.g., by month of first purchase).
-4. CLV per region/state/country: A map visualization showing average customer lifetime value segmented by geographic regions.
-5. % of one-time vs repeat customers: A pie chart representing the proportion of one-time customers versus repeat customers based on their order history.
-*/

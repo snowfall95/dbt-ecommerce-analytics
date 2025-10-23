@@ -10,16 +10,22 @@ geo as (
 
     select * from {{ ref('staging_geolocation') }}
 
+),
+
+joined as (
+
+    select 
+
+        c.customer_id,
+        c.customer_unique_id, 
+        g.geolocation_state as state,
+        g.geolocation_city as city,
+        g.geolocation_zip_code_prefix as location_zip_code
+
+    from customers c
+    left join geo g 
+    on c.customer_zip_code_prefix = g.geolocation_zip_code_prefix
+
 )
 
-select 
-
-    c.customer_id,
-    c.customer_unique_id, 
-    g.geolocation_state as state,
-    g.geolocation_city as city,
-    g.geolocation_zip_code_prefix as location_zip_code
-
-from customers c
-join geo g 
-on c.customer_zip_code_prefix = g.geolocation_zip_code_prefix
+select distinct * from joined
