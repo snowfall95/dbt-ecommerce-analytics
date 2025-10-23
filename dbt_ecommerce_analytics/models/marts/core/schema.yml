@@ -1,0 +1,155 @@
+version: 2
+
+models:
+  - name: dim_customers
+    description: "Dimension table for customers with standardized customer IDs."
+    columns:
+      - name: customer_unique_id  # Standardized name
+        description: "Unique identifier for each customer."
+        tests:
+          - not_null
+          - unique
+      - name: customer_id
+        description: "Original unique identifier for each customer from the source data."
+        tests:
+          - not_null
+          - unique
+      - name: customer_zip_code_prefix
+        description: "ZIP code prefix of the customer's address."
+        tests:
+          - not_null
+      - name: customer_city
+        description: "City of the customer's address."
+        tests:
+          - not_null
+      - name: customer_state
+        description: "State of the customer's address."
+        tests:
+          - not_null
+
+  - name: dim_products
+    description: "Dimension table for products with standardized product IDs."
+    columns:
+      - name: product_id
+        description: "Original unique identifier for each product from the source data."
+        tests:
+          - not_null
+          - unique
+      - name: product_category_name
+        description: "Category of the product in Portuguese Brazilian."
+        tests:
+          - not_null
+      - name: product_category_name_english
+        description: "Category of the product translated to English."
+        tests:
+          - not_null
+
+  - name: dim_sellers
+    description: "Dimension table for sellers with standardized seller IDs."
+    columns:
+      - name: seller_id
+        description: "Original unique identifier for each seller from the source data."
+        tests:
+          - not_null
+          - unique
+      - name: seller_zip_code_prefix
+        description: "ZIP code prefix of the seller's address."
+        tests:
+          - not_null
+      - name: seller_city
+        description: "City of the seller's address."
+        tests:
+          - not_null
+      - name: seller_state
+        description: "State of the seller's address."
+        tests:
+          - not_null
+
+  - name: fact_orders
+    description: "Fact table for orders with key metrics."
+    columns:
+      - name: order_id
+        description: "Unique identifier for each order."
+        tests:
+          - not_null
+          - unique
+      - name: customer_id
+        description: "Unique identifier for the customer who placed the order."
+        tests:
+          - not_null
+      - name: order_status
+        description: "Status of the order (e.g., delivered, shipped, canceled)."
+        tests:
+          - not_null
+      - name: order_purchase_timestamp
+        description: "Timestamp when the order was purchased."
+        tests:
+          - not_null
+      - name: order_approved_at
+        description: "Timestamp when the order was approved."
+        tests:
+          - not_null
+      - name: order_delivered_carrier_date
+        description: "Timestamp when the order was delivered to the carrier."
+        tests:
+          - not_null
+      - name: order_delivered_customer_date
+        description: "Timestamp when the order was delivered to the customer."
+        tests:
+          - not_null
+      - name: order_estimated_delivery_date
+        description: "Timestamp when the order is estimated to be delivered."
+        tests:
+          - not_null
+      - name: currency
+        description: "Currency used for the order payment (All in Brazilian Real - BRL)."
+        tests:
+          - not_null
+      - name: total_items
+        description: "Total number of items in the order."
+        tests:
+          - not_null
+      - name: unique_products
+        description: "Number of unique products in the order."
+        tests:
+          - not_null
+      - name: unique_sellers
+        description: "Number of unique sellers in the order."
+        tests:
+          - not_null
+      - name: order_gross_value
+        description: "Gross value of the order price + freight."
+        tests:
+          - not_null
+      - name: order_total_price
+        description: "Total price of the order (sum of product prices)."
+        tests:
+          - not_null
+      - name: order_total_freight 
+        description: "Total price of the freight."
+        tests:
+          - not_null
+      - name: total_payment 
+        description: "Total payment amount for the order."
+        tests:
+          - not_null
+      - name: payment_method_used
+        description: "Payment method used for the order."
+        tests:
+          - not_null
+      - name: delivery_days
+        description: "Number of days taken for delivery from purchase to customer delivery."
+        tests:
+          - not_null
+      - name: purchase_to_approval_days
+        description: "Number of days taken from purchase to order approval."
+        tests:
+          - not_null
+      - name: approval_to_delivery_days
+        description: "Number of days taken from order approval to customer delivery."
+        tests:
+          - not_null
+      - name: delivery_variance_days
+        description: "Variance between estimated delivery date and actual delivery date."
+        tests:
+          - not_null

@@ -4,7 +4,7 @@ models:
   - name: fact_customer_lifetime_value
     description: "Fact table calculating customer lifetime value based on total spend."
     columns:
-      - name: customer_unique_id  # Standardized name
+      - name: customer_unique_id 
         description: "Unique identifier for each customer."
         tests:
           - not_null

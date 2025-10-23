@@ -13,4 +13,4 @@ sources:
       - name: olist_order_payments_dataset
       - name: olist_order_reviews_dataset
       - name: olist_geolocation_dataset
-      - name: product_category_name_translation
+  

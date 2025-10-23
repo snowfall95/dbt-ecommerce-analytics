@@ -1,0 +1,65 @@
+version: 2
+
+models:
+  - name: int_order_lines
+    description: "Intermediate table combining order lines with product category translations and order details."
+    columns:
+      - name: order_id
+        description: "Unique identifier for the order."
+        tests:
+          - not_null
+      - name: order_item_id
+        description: "Unique identifier for the order item."
+        tests:
+          - not_null
+          - unique
+      - name: product_id
+        description: "Unique identifier for the product."
+        tests:
+          - not_null
+      - name: product_category_name_english
+        description: "Category of the product translated to English."
+        tests:
+          - not_null
+      - name: customer_id
+        description: "Unique identifier for the customer who placed the order."
+        tests:
+          - not_null
+      - name: seller_id
+        description: "Unique identifier for the seller."
+        tests:
+          - not_null
+      - name: shipping_limit_date
+        description: "Deadline for the seller to ship the product."
+        tests:
+          - not_null
+      - name: currency
+        description: "Currency of the transaction."
+        tests:
+          - not_null
+      - name: price
+        description: "Price of the product."
+        tests:
+          - not_null
+      - name: freight_value
+        description: "Shipping cost for the order item."
+        tests:
+          - not_null
+      - name: order_status
+        description: "Current status of the order."
+        tests:
+          - not_null
+      - name: order_purchase_timestamp
+        description: "Timestamp when the order was placed."
+        tests:
+          - not_null
+      - name: order_approved_at
+        description: "Timestamp when the order was approved."
+      - name: order_delivered_carrier_date
+        description: "Date when the order was handed to the carrier."
+      - name: order_delivered_customer_date
+        description: "Date when the customer received the order."
+      - name: order_estimated_delivery_date
+        description: "Estimated delivery date provided at time of purchase."
+        tests:
+          - not_null
