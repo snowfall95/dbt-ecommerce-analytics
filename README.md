@@ -54,6 +54,7 @@ graph LR
 
 Key Features:
 - **Incremental Processing**: Models like `fact_orders` support incremental loads for efficiency
+- **Seeds**: csv file called `product_category_name_translation.csv` to show the category translation between Brazilian and English
 - **Data Quality**: Extensive testing with dbt_expectations
 - **Documentation**: Comprehensive inline documentation and model descriptions
 
@@ -61,37 +62,60 @@ Key Features:
 
 ## 🎯 Key Metrics Delivered
 
+The project implements a comprehensive set of metrics across orders, customers, deliveries, payments, and satisfaction to support analytics and marketing use cases.
+
 <table>
   <tr>
     <td align="center">
       <h3>💰 Order Analytics</h3>
-      <p>Comprehensive order metrics including:<br/>
-      - Total items per order<br/>
-      - Unique products and sellers<br/>
-      - Order values and shipping costs</p>
+      <p>Order-level metrics implemented:<br/>
+      - total_items (count of items per order)<br/>
+      - unique_products (distinct products per order)<br/>
+      - unique_sellers (distinct sellers per order)<br/>
+      - order_gross_value (sum of price + freight)<br/>
+      - order_total_price (sum of item prices)<br/>
+      - order_total_freight (sum of freight_value)</p>
     </td>
     <td align="center">
-      <h3>⭐ Customer Lifetime Value</h3>
-      <p>Advanced CLV analysis including:<br/>
-      - Order frequency and recency<br/>
-      - Customer segmentation<br/>
-      - Activity status tracking</p>
+      <h3>⭐ Customer Lifetime Value (CLV)</h3>
+      <p>Customer-level metrics and segments:<br/>
+      - total_orders (count of orders per customer)<br/>
+      - gross_revenue / total_spent (sum of order values)<br/>
+      - average_order_value (mean spend per order)<br/>
+      - first_purchase / last_purchase (recency & tenure)<br/>
+      - customer_lifespan_days, customer_segment, customer_activity_status</p>
     </td>
   </tr>
   <tr>
     <td align="center">
       <h3>🚚 Delivery Performance</h3>
-      <p>Detailed delivery metrics:<br/>
-      - Delivery time analysis<br/>
-      - Purchase to approval time<br/>
-      - Delivery variance tracking</p>
+      <p>Delivery and timing metrics used by marketing models:<br/>
+      - delivery_days (purchase → customer delivery)<br/>
+      - delivery_variance_days (actual vs estimated)<br/>
+      - purchase_to_approval_days, approval_to_delivery_days<br/>
+      - delivery_performance_category & delivery_speed_category (timing buckets)</p>
     </td>
     <td align="center">
-      <h3>💳 Payment Analysis</h3>
-      <p>Payment insights including:<br/>
-      - Payment methods used<br/>
-      - Total payment values<br/>
-      - Payment method diversity</p>
+      <h3>💳 Payment & Revenue</h3>
+      <p>Payments aggregated at order level:<br/>
+      - total_payment (sum of payment_value)<br/>
+      - payment_method_used (count / diversity of payment types)</p>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <h3>📝 Customer Satisfaction</h3>
+      <p>Review-based insights used in satisfaction models:<br/>
+      - review_score / average_review_score<br/>
+      - total_reviews, positive_reviews, negative_reviews<br/>
+      - satisfaction_category, average_response_time_days</p>
+    </td>
+    <td align="center">
+      <h3>🔎 Data Quality & Tests</h3>
+      <p>Schema and quality checks in place:<br/>
+      - Not-null & unique tests for keys (order_id, order_item_id, product_id)<br/>
+      - Referential checks between staging → intermediate → core<br/>
+      - Business rules using dbt_expectations (status sets, duplicates)</p>
     </td>
   </tr>
 </table>
@@ -120,7 +144,7 @@ Dependencies:
 
 ### Prerequisites
 ```bash
-Python 3.8+
+Python 3.9+ 
 dbt-core
 dbt-bigquery
 Google Cloud account
@@ -170,7 +194,7 @@ dbt docs serve
 
 ### 🎯 Customer Segmentation
 ```sql
--- High-value customers (top 20%)
+-- High-value customers
 SELECT 
     customer_segment,
     COUNT(*) as customer_count,
@@ -178,32 +202,6 @@ SELECT
 FROM {{ ref('fact_customer_lifetime_value') }}
 WHERE customer_segment = 'high_value'
 ```
-
-**Key Finding**: Top 20% of customers generate 65% of revenue
-
-### 📦 Delivery Impact
-> **Fast delivery = Happy customers**  
-> Orders delivered within estimated time have 4.5★ average rating vs 2.8★ for delayed orders
-
----
-
-## 🧪 Data Quality & Testing
-```yaml
-✅ 45+ data tests implemented
-✅ Schema validation on all staging models
-✅ Referential integrity checks
-✅ Business logic validation
-✅ Null value detection
-✅ Duplicate prevention
-```
-
-**Test Coverage:**
-- Uniqueness tests: 12
-- Not-null tests: 18
-- Relationship tests: 8
-- Custom business logic tests: 7
-
----
 
 ## 📈 Project Highlights
 
@@ -223,6 +221,7 @@ WHERE customer_segment = 'high_value'
 - Modular design (staging → core → marts)
 - DRY principles with macros
 - Version-controlled data quality
+- Well, this documentation explaining all the stuff
 
 ---
 
@@ -286,18 +285,6 @@ dbt-ecommerce-analytics/
   └── dbt_date/
 ```
 
----
-
-## 🔮 Future Enhancements
-
-- [ ] Add real-time streaming data processing
-- [ ] Implement machine learning models for churn prediction
-- [ ] Create automated alerting for KPI thresholds
-- [ ] Expand to multi-country analysis
-- [ ] Add product recommendation engine
-
----
-
 ## 👨‍💻 About Me
 
 I'm Naufal Avianda, a Data Analyst transitioning to Analytics Engineering, passionate about turning messy data into clear insights. This project showcases my ability to:
@@ -310,7 +297,6 @@ I'm Naufal Avianda, a Data Analyst transitioning to Analytics Engineering, passi
 **Connect with me:**  
 📧 Email: avianda1995@gmail.com 
 💼 LinkedIn:   [Naufal Avianda | LinkedIn](https://www.linkedin.com/in/naufal-avianda-61799764/)
-📝 Blog: [My Data Journey](link)
 
 ---
 
@@ -328,9 +314,8 @@ This project is open source and available under the [MIT License](LICENSE).
 ---
 
 <p align="center">
-  <i>⭐ If you found this project helpful, please consider giving it a star! Or even if you have anything to share or advise to further optimise the model(s), I'm all ear! </i>
+  <i>⭐ If you found this project helpful, please consider giving it a star! Or even if you have anything to share or advise to further optimise the model(s), I'd love to hear! </i>
 </p>
 
 <p align="center">
-  Made with ❤️ and dbt
 </p>
