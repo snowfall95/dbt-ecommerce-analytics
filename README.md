@@ -11,7 +11,7 @@
 ## 📸 Quick Visual Tour
 
 ### 📊 Data Lineage
-![Data Lineage](link-to-screenshot-from-dbt-docs)
+<img width="1833" height="833" alt="image" src="https://github.com/user-attachments/assets/9f99e926-a3d4-4b92-a393-b6b28943d97e" />
 *From raw events to business-ready metrics in 3 layers*
 ---
 
