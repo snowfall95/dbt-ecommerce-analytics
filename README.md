@@ -13,13 +13,6 @@
 ### 📊 Data Lineage
 ![Data Lineage](link-to-screenshot-from-dbt-docs)
 *From raw events to business-ready metrics in 3 layers*
-
-### 📈 Sample Dashboard
-![Dashboard](link-to-dashboard-screenshot)
-*Key metrics: CLV (Customer Lifetime Value), Satisfaction Score, Delivery Performance*
-
-_Note: replace the placeholder image links above with screenshots saved in this repo (for example `docs/assets/`) or link to hosted images. If GitHub doesn't render the Mermaid diagram, include a static PNG instead._
-
 ---
 
 ## 💡 The Problem
