@@ -2,7 +2,6 @@
 > **Transforming 100K+ orders into actionable business insights using dbt & BigQuery**
 >
 > 
-<<<<<<< feature/update-readme
 [![dbt](https://img.shields.io/badge/dbt-Core-orange)](https://www.getdbt.com/)
 [![BigQuery](https://img.shields.io/badge/BigQuery-Cloud-blue)](https://cloud.google.com/bigquery)
 ![Status](https://img.shields.io/badge/status-active-success)
