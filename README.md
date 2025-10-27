@@ -172,12 +172,15 @@ my_bigquery_profile:
 ```
 
 # 4. Run the pipeline
+```bash
 dbt deps
 dbt seed
 dbt run
 dbt test
+```
 
 # 5. Generate documentation
+```bash
 dbt docs generate
 dbt docs serve
 ```
