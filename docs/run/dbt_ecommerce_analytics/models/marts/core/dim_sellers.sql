@@ -1,0 +1,38 @@
+
+  
+    
+
+    create or replace table `ecommerce-analytics-475706`.`dbt_ecommerce_core`.`dim_sellers`
+      
+    
+    
+
+    
+    OPTIONS()
+    as (
+      with 
+
+sellers as (
+
+    select * from `ecommerce-analytics-475706`.`dbt_ecommerce_staging`.`staging_sellers`
+
+),
+
+geo as (
+
+    select * from `ecommerce-analytics-475706`.`dbt_ecommerce_staging`.`staging_geolocation`
+
+)
+
+select 
+
+    s.seller_id,
+    s.seller_zip_code_prefix,
+    s.seller_city,
+    s.seller_state
+
+from sellers s
+join geo g
+on s.seller_zip_code_prefix = g.geolocation_zip_code_prefix
+    );
+  

@@ -1,0 +1,37 @@
+
+  
+    
+
+    create or replace table `ecommerce-analytics-475706`.`dbt_ecommerce_core`.`dim_products`
+      
+    
+    
+
+    
+    OPTIONS()
+    as (
+      with 
+
+products as (
+
+    select * from `ecommerce-analytics-475706`.`dbt_ecommerce_staging`.`staging_products`
+
+),
+
+product_english_translations as (
+
+    select * from `ecommerce-analytics-475706`.`dbt_ecommerce_seeds`.`product_category_name_translation`
+
+)
+
+select 
+
+    p.product_id,
+    p.product_category_name,
+    pt.product_category_name_english,
+
+from products p 
+join product_english_translations pt
+on p.product_category_name = pt.product_category_name
+    );
+  
