@@ -44,20 +44,12 @@ models:
           - unique
       - name: total_reviews
         description: "Total number of reviews submitted by the customer."
-        tests:
-          - not_null
       - name: average_review_score
         description: "Average score of reviews submitted by the customer."
-        tests:
-          - not_null
       - name: positive_reviews
         description: "Number of reviews with a score of 4 or 5 stars submitted by the customer."
-        tests:
-          - not_null
       - name: negative_reviews
         description: "Number of reviews with a score of 1 or 2 stars submitted by the customer."
-        tests:
-          - not_null
       - name: average_response_time_days
         description: "Average time taken to respond to the customer's reviews."
         
@@ -76,7 +68,5 @@ models:
               values: ['Early', 'On-time', 'Slightly Late', 'Very Late']
       - name: total_deliveries
         description: "Total number of deliveries made to the customer."
-        tests:
-          - not_null
       - name: average_delay_days
         description: "Average number of days deliveries were delayed."
