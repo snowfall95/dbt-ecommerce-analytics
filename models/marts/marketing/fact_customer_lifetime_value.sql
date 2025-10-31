@@ -1,4 +1,23 @@
 -- Granularity: One row per customer with lifetime metrics
+/*
+This model analyzes customer behavior using historical data from the Brazilian E-commerce dataset (2016-2018).
+Analysis date is set to September 1st, 2018 as a snapshot point to:
+1. Analyze customer behavior and segmentation as of this date
+2. Ensure all customers have complete order history (avoid right-censoring)
+3. Calculate meaningful recency metrics relative to this business timeframe
+
+Customer Segmentation Logic:
+- New: First purchase within 30 days of analysis date
+- Active: First purchase between 30-180 days of analysis date
+- Dormant: No purchases in last 180 days
+
+Purchase Frequency Categories:
+- One-time: Single purchase only
+- Repeat: 2-5 purchases
+- Loyal: More than 5 purchases
+*/
+
+{% set analysis_date = '2018-09-01 00:00:00' %} -- Snapshot date for historical analysis
 
 with 
 
@@ -26,7 +45,7 @@ select
     count(distinct o.order_id) as total_orders,
     min(o.order_purchase_timestamp) as first_order_date,
     max(o.order_purchase_timestamp) as recent_order_date,
-    date_diff(max(o.order_purchase_timestamp), min(o.order_purchase_timestamp), day) as customer_lifespan_days,
+    date_diff(timestamp('{{ analysis_date }}'), min(o.order_purchase_timestamp), day) as customer_lifespan_days,
 
     -- Financial Metrics
     round(sum(o.order_gross_value), 2) as gross_revenue,
@@ -40,7 +59,7 @@ select
     avg(o.unique_products) as avg_unique_products_per_order,
 
     -- Recency Metrics
-    date_diff(current_timestamp(), max(o.order_purchase_timestamp), day) as days_since_last_order,
+    date_diff(timestamp('{{ analysis_date }}'), max(o.order_purchase_timestamp), day) as days_since_last_order,
 
     -- Customer segments
     case 
@@ -50,8 +69,8 @@ select
     end as customer_segment,
 
     case 
-        when date_diff(max(o.order_purchase_timestamp), min(o.order_purchase_timestamp), day) < 30 then 'new'
-        when date_diff(max(o.order_purchase_timestamp), min(o.order_purchase_timestamp), day) between 30 and 180 then 'active'
+        when date_diff(timestamp('{{ analysis_date }}'), min(o.order_purchase_timestamp), day) < 30 then 'new'
+        when date_diff(timestamp('{{ analysis_date }}'), min(o.order_purchase_timestamp), day) between 30 and 180 then 'active'
         else 'dormant'
     end as customer_activity_status
 

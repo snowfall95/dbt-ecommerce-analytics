@@ -37,15 +37,17 @@ select
     -- Delivery metrics (calculate directly)
     o.delivery_days,
     o.delivery_variance_days,
-    case
-        when o.delivery_variance_days >= 0 then 'On Time'
-        else 'Late'
-    end as delivery_status,
-    case
-        when o.delivery_days <= 7 then 'Fast'
-        when o.delivery_days between 8 and 14 then 'Average'
-        else 'Slow'
-    end as delivery_speed,
+    case 
+        when o.delivery_variance_days < 0 then 'Later than Estimated'
+        when o.delivery_variance_days = 0 then 'On Time'
+        else 'Earlier than Estimated'
+    end as delivery_performance_category,
+
+    case 
+        when o.delivery_days <= 3 then 'Fast Delivery'
+        when o.delivery_days <= 7 then 'Standard Delivery'
+        else 'Slow Delivery'
+    end as delivery_speed_category,
 
     -- Satisfaction 
     case 

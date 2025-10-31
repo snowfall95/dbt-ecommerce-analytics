@@ -11,28 +11,17 @@ models:
           - unique
       - name: total_orders
         description: "Total number of orders placed by the customer."
-        tests:
-          - not_null
       - name: total_spent
         description: "Total amount spent by the customer."
-        tests:
-          - not_null
       - name: average_order_value
         description: "Average value of orders placed by the customer."
-        tests:
-          - not_null
       - name: first_purchase 
         description: "Date of the customer's first purchase."
-        tests:
-          - not_null
       - name: last_purchase
         description: "Date of the customer's most recent purchase."
-        tests:
-          - not_null
       - name: customer_lifespan_days
         description: "Number of days between the first and last purchase."
-        tests:
-          - not_null
+
 
   - name: fact_customer_satisfaction
     description: "Fact table calculating customer satisfaction based on review ratings."

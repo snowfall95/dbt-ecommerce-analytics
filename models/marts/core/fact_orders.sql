@@ -69,10 +69,14 @@ select
     pa.payment_method_used,
 
     -- Calculated Delivery Metrics
-    date_diff(ol.order_purchase_timestamp, ol.order_delivered_customer_date, day) as delivery_days,
-    date_diff(ol.order_purchase_timestamp, ol.order_approved_at, day) as purchase_to_approval_days,
-    date_diff(ol.order_approved_at, ol.order_delivered_customer_date, day) as approval_to_delivery_days,
-    date_diff(ol.order_delivered_customer_date, ol.order_estimated_delivery_date, day) as delivery_variance_days
+    date_diff(ol.order_delivered_customer_date, ol.order_purchase_timestamp, day) as delivery_days,
+    date_diff(ol.order_approved_at, ol.order_purchase_timestamp, day) as purchase_to_approval_days,
+
+    date_diff(ol.order_delivered_carrier_date, ol.order_approved_at, day) as approval_to_carrier_days,
+    date_diff(ol.order_delivered_customer_date, ol.order_delivered_carrier_date, day) as carrier_to_customer_days,
+
+    date_diff(ol.order_delivered_customer_date, ol.order_approved_at, day) as approval_to_delivery_days,
+    date_diff(ol.order_estimated_delivery_date, ol.order_delivered_customer_date, day) as delivery_variance_days
 
 from order_lines ol
 join payment_aggregated pa on ol.order_id = pa.order_id

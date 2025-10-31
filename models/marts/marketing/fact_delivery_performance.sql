@@ -42,15 +42,14 @@ select
 
     -- Performance flags
     case 
-        when o.delivery_variance_days < 0 then 'Early'
+        when o.delivery_variance_days < 0 then 'Later than Estimated'
         when o.delivery_variance_days = 0 then 'On Time'
-        when o.delivery_variance_days between 1 and 3 then 'Slightly Late'
-        else 'Very Late'
+        else 'Earlier than Estimated'
     end as delivery_performance_category,
 
     case 
-        when o.delivery_days <= 7 then 'Fast Delivery'
-        when o.delivery_days <= 14 then 'Standard Delivery'
+        when o.delivery_days <= 3 then 'Fast Delivery'
+        when o.delivery_days <= 7 then 'Standard Delivery'
         else 'Slow Delivery'
     end as delivery_speed_category,
 
@@ -61,10 +60,10 @@ select
     o.total_payment,
 
     -- Calculate days between key milestones
-    date_diff(o.order_purchase_timestamp, o.order_approved_at, day) as purchase_to_approval_days,
-    date_diff(o.order_approved_at, o.order_delivered_carrier_date, day) as approval_to_carrier_days,
-    date_diff(o.order_delivered_carrier_date, o.order_delivered_customer_date, day) as carrier_to_customer_days,
-    date_diff(o.order_purchase_timestamp, o.order_delivered_customer_date, day) as purchase_to_delivery_days
+    o.purchase_to_approval_days,
+    o.approval_to_carrier_days,
+    o.carrier_to_customer_days,
+    o.approval_to_delivery_days
 
 from orders o
 join customers c 
